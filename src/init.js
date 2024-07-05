@@ -17,37 +17,50 @@ const config = {
 var game = new Phaser.Game(config);
 
 let imageObjects = []; // Array to hold image objects
-const totalImages = 50; // Total number of images in the list
-const imageSpacing = 100; // Spacing between images
-const scrollSpeed = 2; // Speed of scrolling
+const totalImages = 24; // Total number of images in the list
+const imageSpacing = 200; // Spacing between images
+let scrollSpeed = 25; // Speed of scrolling
+let isButtonPressed = false; // Flag to check if the button is pressed
+const centerPosition = config.height / 2; // Central position of the screen
 
 function preload() {
-     // Array to hold image objects for the first list
-    let imageObjects1 = [];
-    // Array to hold image objects for the second list
-    let imageObjects2 = []; 
-    // Array to hold image objects for the third list
-    let imageObjects3 = []; 
     // Load images into the game
     this.load.image("image1", "./assets/lemon.jpg");
     this.load.image("image2", "./assets/bananas.jpg");
     this.load.image("image3", "./assets/watermelon.jpg");
-    // Load the spin button image
-    this.load.image("spinButton", "./assets/spinButton.jpeg"); 
+    this.load.image("spinButton", "./assets/spinButton.jpeg");
 }
 
 function create() {
     // Array of image keys
     const imageKeys = ["image1", "image2", "image3"];
-      // Add the spin button and position it to the left
-      let spinButton = this.add.image(50, config.height /2, "spinButton").setOrigin(0.5, 0.5).setInteractive();
+    // Add the spin button and position it to the left
+    let spinButton = this.add.image(200, config.height / 2, "spinButton").setOrigin(0.5, 0.5).setInteractive();
+    
+    // Add event listener for the button
+    spinButton.on('pointerdown', () => {
+        isButtonPressed = true;
+        scrollSpeed = 25; // Reset scroll speed when button is pressed
+    });
+
     // Generate a random order of images for a list of 50 items
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let image = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
-        let image2 = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(2.5, 0.5);
-        imageObjects.push(image);
-        imageObjects.push(image2);
+        let imagee = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.9, 0.5);
+        imagee.setScale(2.9);
+        imageObjects.push(imagee);
+    }
+    for (let i = 0; i < totalImages; i++) {
+        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
+        let imagee2 = this.add.image(config.width / 2 + 150, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.7, 0.5);
+        imagee2.setScale(2.9);
+        imageObjects.push(imagee2);
+    }
+    for (let i = 0; i < totalImages; i++) {
+        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
+        let imagee3 = this.add.image(config.width / 2 + 300, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
+        imagee3.setScale(2.9);
+        imageObjects.push(imagee3);
     }
     
 }
@@ -62,4 +75,29 @@ function update(time, delta) {
             image.y = -imageSpacing;
         }
     });
+    if (isButtonPressed) {
+       
+
+        // Decrease the scroll speed progressively
+        if (scrollSpeed > 0) {
+            scrollSpeed -= 0.25;
+        } else if (scrollSpeed <= 0) {
+            scrollSpeed = 0;
+            isButtonPressed = false;
+            printCenterImages();
+        }
+    }
+}
+
+function printCenterImages() {
+    const tolerance = 75; // Tolerance to consider an image at the center
+    let centerImages = [];
+
+    imageObjects.forEach(image => {
+        if (Math.abs(image.y - centerPosition) <= tolerance) {
+            centerImages.push(image.texture.key);
+        }
+    });
+
+    console.log('Center images:', centerImages);
 }
