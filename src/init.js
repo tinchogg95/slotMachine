@@ -46,20 +46,20 @@ function create() {
     // Generate a random order of images for a list of 50 items
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let imagee = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.9, 0.5);
-        imagee.setScale(2.9);
+        let imagee = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.5, 0.5);
+        imagee.setScale(2.8);
         imageObjects.push(imagee);
     }
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let imagee2 = this.add.image(config.width / 2 + 150, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.7, 0.5);
-        imagee2.setScale(2.9);
+        let imagee2 = this.add.image(config.width / 2 + 150, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.0, 0.5);
+        imagee2.setScale(2.8);
         imageObjects.push(imagee2);
     }
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
         let imagee3 = this.add.image(config.width / 2 + 300, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
-        imagee3.setScale(2.9);
+        imagee3.setScale(2.8);
         imageObjects.push(imagee3);
     }
     
@@ -96,6 +96,12 @@ function printCenterImages() {
     imageObjects.forEach(image => {
         if (Math.abs(image.y - centerPosition) <= tolerance) {
             centerImages.push(image.texture.key);
+
+            // Add a border or effect to mark the center images
+            image.setTint(0xff0000); // Example: Red tint to mark center images
+        } else {
+            // Reset any previous marking or effect
+            image.clearTint();
         }
     });
 
