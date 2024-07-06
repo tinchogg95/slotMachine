@@ -25,25 +25,21 @@ const centerPosition = config.height / 2; // Central position of the screen
 
 function preload() {
     // Load images into the game
+    this.load.image("background", "./assets/background.jpg");
     this.load.image("image1", "./assets/lemon.jpg");
     this.load.image("image2", "./assets/bananas.jpg");
     this.load.image("image3", "./assets/watermelon.jpg");
-    this.load.image("spinButton", "./assets/spinButton.jpeg");
+    this.load.image("spinButton", "./assets/blue-spin-button.png");
 }
 
 function create() {
     // Array of image keys
     const imageKeys = ["image1", "image2", "image3"];
-    // Add the spin button and position it to the left
-    let spinButton = this.add.image(200, config.height / 2, "spinButton").setOrigin(0.5, 0.5).setInteractive();
+    // Add the background image
+    let background = this.add.image(400, 300, 'background');
     
-    // Add event listener for the button
-    spinButton.on('pointerdown', () => {
-        isButtonPressed = true;
-        scrollSpeed = 25; // Reset scroll speed when button is pressed
-    });
 
-    // Generate a random order of images for a list of 50 items
+    // Generate a random order of images for three lists of 24 items each
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
         let imagee = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.5, 0.5);
@@ -62,7 +58,18 @@ function create() {
         imagee3.setScale(2.8);
         imageObjects.push(imagee3);
     }
-    
+
+    // Add the spin button and position it to the left and bring it to the front
+    let spinButton = this.add.image((config.width / 2) + 30, config.height - 50, "spinButton").setOrigin(0.5, 0.5).setInteractive();
+    spinButton.setScale(0.75);
+    // Add event listener for the button
+    spinButton.on('pointerdown', () => {
+        isButtonPressed = true;
+        scrollSpeed = 25; // Reset scroll speed when button is pressed
+    });
+
+    // Ensure the spin button is brought to the front
+    this.children.bringToTop(spinButton);
 }
 
 function update(time, delta) {
@@ -75,9 +82,8 @@ function update(time, delta) {
             image.y = -imageSpacing;
         }
     });
-    if (isButtonPressed) {
-       
 
+    if (isButtonPressed) {
         // Decrease the scroll speed progressively
         if (scrollSpeed > 0) {
             scrollSpeed -= 0.25;
@@ -90,13 +96,12 @@ function update(time, delta) {
 }
 
 function printCenterImages() {
-    const tolerance = 75; // Tolerance to consider an image at the center
+    const tolerance = 105; // Tolerance to consider an image at the center
     let centerImages = [];
 
     imageObjects.forEach(image => {
         if (Math.abs(image.y - centerPosition) <= tolerance) {
-            centerImages.push(image.texture.key);
-
+            centerImages.push(image.texture.key);   
             // Add a border or effect to mark the center images
             image.setTint(0xff0000); // Example: Red tint to mark center images
         } else {
