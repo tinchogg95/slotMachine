@@ -17,7 +17,7 @@ const config = {
 var game = new Phaser.Game(config);
 
 let imageObjects = []; // Array to hold image objects
-const totalImages = 24; // Total number of images in the list
+const totalImages = 50; // Total number of images in the list
 const imageSpacing = 200; // Spacing between images
 let scrollSpeed = 25; // Speed of scrolling
 let isButtonPressed = false; // Flag to check if the button is pressed
@@ -26,6 +26,7 @@ const centerPosition = config.height / 2; // Central position of the screen
 function preload() {
     // Load images into the game
     this.load.image("background", "./assets/background.jpg");
+    this.load.image("arrow", "./assets/blue-arrow.png");
     this.load.image("image1", "./assets/lemon.jpg");
     this.load.image("image2", "./assets/bananas.jpg");
     this.load.image("image3", "./assets/watermelon.jpg");
@@ -37,24 +38,28 @@ function create() {
     const imageKeys = ["image1", "image2", "image3"];
     // Add the background image
     let background = this.add.image(400, 300, 'background');
-    
+    let rightArrow = this.add.image(60, 300, 'arrow');
+    let leftArrow = this.add.image(730, 300, 'arrow');
+    leftArrow.setScale(0.25);
+    leftArrow.rotation = Math.PI;
+    rightArrow.setScale(0.25);
 
     // Generate a random order of images for three lists of 24 items each
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let imagee = this.add.image(config.width / 2, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.5, 0.5);
+        let imagee = this.add.image(config.width / 2 + 10, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.5, 0.5);
         imagee.setScale(2.8);
         imageObjects.push(imagee);
     }
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let imagee2 = this.add.image(config.width / 2 + 150, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.0, 0.5);
+        let imagee2 = this.add.image(config.width / 2 + 110, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.0, 0.5);
         imagee2.setScale(2.8);
         imageObjects.push(imagee2);
     }
     for (let i = 0; i < totalImages; i++) {
         let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let imagee3 = this.add.image(config.width / 2 + 300, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
+        let imagee3 = this.add.image(config.width / 2 + 210, i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
         imagee3.setScale(2.8);
         imageObjects.push(imagee3);
     }
@@ -70,6 +75,9 @@ function create() {
 
     // Ensure the spin button is brought to the front
     this.children.bringToTop(spinButton);
+    this.children.bringToTop(rightArrow);
+    this.children.bringToTop(leftArrow);
+
 }
 
 function update(time, delta) {
@@ -109,6 +117,10 @@ function printCenterImages() {
             image.clearTint();
         }
     });
-
+    
     console.log('Center images:', centerImages);
+    centerImages.forEach(centerImg  => {
+        console.log(centerImg.x);
+        console.log(centerImg.y);
+    })
 }
