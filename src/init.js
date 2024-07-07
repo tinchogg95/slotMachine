@@ -75,26 +75,11 @@ function create() {
     rabbitMoney.setActive(true).setVisible(false);
     textWinner.setActive(true).setVisible(false);
 
-    // Generate a random order of images for three lists of 24 items each
-    for (let i = 0; i < totalImages; i++) {
-        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let lemonImage = this.add.image(config.width / 2 , i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.5, 0.5);
-        lemonImage.setScale(2.8);
-        imageObjects.push(lemonImage);
-    }
-    for (let i = 0; i < totalImages; i++) {
-        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let bananasImage = this.add.image(config.width / 2 + widthImages, i * imageSpacing, imageKeys[randomIndex]).setOrigin(1.0, 0.5);
-        bananasImage.setScale(2.8);
-        imageObjects2.push(bananasImage);
-    }
-    
-    for (let i = 0; i < totalImages; i++) {
-        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
-        let watermelon = this.add.image(config.width / 2 + 2*(widthImages), i * imageSpacing, imageKeys[randomIndex]).setOrigin(0.5, 0.5);
-        watermelon.setScale(2.8);
-        imageObjects3.push(watermelon);
-    }
+    // Generate a random order of images for three lists
+    generateImages(this, imageKeys, imageObjects, 0, imageSpacing, totalImages, 1.5);
+    generateImages(this, imageKeys, imageObjects2, widthImages, imageSpacing, totalImages, 1.0);
+    generateImages(this, imageKeys, imageObjects3, 2 * widthImages, imageSpacing, totalImages, 0.5);
+
 
     // Add the spin button and position it to the left and bring it to the front
     let spinButton = this.add.image((config.width / 2), config.height - 50, "spinButton").setOrigin(0.5, 0.5).setInteractive();
@@ -114,36 +99,21 @@ function create() {
     this.children.bringToTop(sadFace);
 }
 
+function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, totalImages, originX) {
+    for (let i = 0; i < totalImages; i++) {
+        let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
+        let image = scene.add.image(config.width / 2 + xOffset, i * imageSpacing, imageKeys[randomIndex]).setOrigin(originX, 0.5);
+        image.setScale(2.8);
+        imageObjects.push(image);
+    }
+}
+
 function update(time, delta) {
-    
-
     if (isButtonPressed) {
-            // Update position of each image
-    imageObjects.forEach(image => {
-        image.y += scrollSpeed;
+    updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, config.height);
+    updateAndResetImages(imageObjects2, scrollSpeed, imageSpacing, config.height);
+    updateAndResetImages(imageObjects3, scrollSpeed, imageSpacing, config.height);
 
-        // Reset position if image moves out of the screen
-        
-        if (image.y > config.height + imageSpacing) {
-            image.y = -imageSpacing;
-        }
-    });
-    imageObjects2.forEach(image => {
-        image.y += scrollSpeed;
-        
-        // Reset position if image moves out of the screen
-        if (image.y > config.height + imageSpacing) {
-            image.y = -imageSpacing;
-        }
-    });
-    imageObjects3.forEach(image => {
-        image.y += scrollSpeed;
-
-        // Reset position if image moves out of the screen
-        if (image.y > config.height + imageSpacing) {
-            image.y = -imageSpacing;
-        }
-    });
 
         // Decrease the scroll speed progressively
         if (scrollSpeed > 0) {
@@ -159,43 +129,25 @@ function update(time, delta) {
     }
 }
 
+function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHeight) {
+    imageObjects.forEach(image => {
+        image.y += scrollSpeed;
+        
+        // Reset position if image moves out of the screen
+        if (image.y > screenHeight + imageSpacing) {
+            image.y = -imageSpacing;
+        }
+    });
+}
+
 function printCenterImages() {
     const tolerance = 105; // Tolerance to consider an image at the center
     let centerImages = [];
     let allTheSame = true;
-    imageObjects.forEach(image => {
-        if (Math.abs(image.y - centerPosition) <= tolerance) {
-            centerImages.push(image.texture.key);   
-            // Add a border or effect to mark the center images
-            image.setTint(0xff0000); // Example: Red tint to mark center images
-            
-        } else {
-            // Reset any previous marking or effect
-            image.clearTint();
-        }
-    });
-
-    imageObjects2.forEach(image => {
-        if (Math.abs(image.y - centerPosition) <= tolerance) {
-            centerImages.push(image.texture.key);   
-            // Add a border or effect to mark the center images
-            image.setTint(0xff0000); // Example: Red tint to mark center images
-        } else {
-            // Reset any previous marking or effect
-            image.clearTint();
-        }
-    });
-
-    imageObjects3.forEach(image => {
-        if (Math.abs(image.y - centerPosition) <= tolerance) {
-            centerImages.push(image.texture.key);   
-            // Add a border or effect to mark the center images
-            image.setTint(0xff0000); // Example: Red tint to mark center images
-        } else {
-            // Reset any previous marking or effect
-            image.clearTint();            
-        }
-    });
+ 
+    markCenterImages(imageObjects, centerPosition, tolerance, centerImages);
+    markCenterImages(imageObjects2, centerPosition, tolerance, centerImages);
+    markCenterImages(imageObjects3, centerPosition, tolerance, centerImages);
 
     console.log('Center images:', centerImages);
     firstImage = centerImages[0];
@@ -213,4 +165,14 @@ function printCenterImages() {
         textWinner.setText("YOU LOSE");
         textWinner.setActive(true).setVisible(true);
     }
+}
+
+function markCenterImages(imageArray, centerPosition, tolerance, centerImages) {
+    imageArray.forEach(image => {
+        if (Math.abs(image.y - centerPosition) <= tolerance) {
+            centerImages.push(image.texture.key);
+            // mark center image with red tint
+            image.setTint(0xff0000); 
+        } 
+    });
 }
