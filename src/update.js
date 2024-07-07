@@ -1,15 +1,11 @@
-import { updateAndResetImages, printCenterImages } from './helpers.js';
 import globals from './globals.js';
+import { updateAndResetImages, printCenterImages } from './helpers.js';
 
 function update(time, delta) {
     if (globals.isButtonPressed) {
-        const config = this.sys.game.config;
-        const imageSpacing = 200;
-        globals.spinButton.setActive(true).setVisible(false);
-
-        updateAndResetImages(globals.imageObjects, globals.scrollSpeed, imageSpacing, config.height);
-        updateAndResetImages(globals.imageObjects2, globals.scrollSpeed, imageSpacing, config.height);
-        updateAndResetImages(globals.imageObjects3, globals.scrollSpeed, imageSpacing, config.height);
+        updateAndResetImages(globals.imageObjects, globals.imageKeys, globals.scrollSpeed, globals.imageSpacing, globals.config.height, this);
+        updateAndResetImages(globals.imageObjects2, globals.imageKeys, globals.scrollSpeed, globals.imageSpacing, globals.config.height, this);
+        updateAndResetImages(globals.imageObjects3, globals.imageKeys, globals.scrollSpeed, globals.imageSpacing, globals.config.height, this);
 
         if (globals.scrollSpeed > 0) {
             setTimeout(() => {

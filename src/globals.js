@@ -2,13 +2,21 @@ const globals = {
     imageObjects: [],
     imageObjects2: [],
     imageObjects3: [],
+    totalImages: 500,
+    imageSpacing: 200,
     scrollSpeed: 25,
     isButtonPressed: false,
+    centerPosition: 300,
+    imageKeys: ["image1", "image2", "image3"], 
     rabbitMoney: null,
     textWinner: null,
-    restartButton: null,
     spinButton: null,
-    sadFace: null
+    restartButton: null,
+    sadFace: null,
+    config: {
+        width: 800,
+        height: 600
+    }
 };
 
 export default globals;

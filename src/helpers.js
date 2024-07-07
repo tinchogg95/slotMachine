@@ -11,15 +11,21 @@ function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, t
     }
 }
 
-function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHeight) {
+function updateAndResetImages(imageObjects, imageKeys, scrollSpeed, imageSpacing, screenHeight, scene) {
     imageObjects.forEach(image => {
         image.y += scrollSpeed;
 
         if (image.y > screenHeight + imageSpacing) {
+            // Reset position if image moves out of the screen
             image.y = -imageSpacing;
+
+            // Choose a new random image key and set it
+            let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
+            image.setTexture(imageKeys[randomIndex]);
         }
     });
 }
+
 
 function printCenterImages() {
     //const tolerance = 105;
