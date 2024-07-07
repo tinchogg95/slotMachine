@@ -5,6 +5,7 @@ function update(time, delta) {
     if (globals.isButtonPressed) {
         const config = this.sys.game.config;
         const imageSpacing = 200;
+        globals.spinButton.setActive(true).setVisible(false);
 
         updateAndResetImages(globals.imageObjects, globals.scrollSpeed, imageSpacing, config.height);
         updateAndResetImages(globals.imageObjects2, globals.scrollSpeed, imageSpacing, config.height);

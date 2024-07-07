@@ -35,6 +35,8 @@ function printCenterImages() {
     console.log('Center images:', centerImages);
     const firstImage = centerImages[0];
     let areAllTheSame = true;
+    globals.restartButton.setActive(true).setVisible(true);
+ 
     centerImages.forEach(imageSelected => {
         if (firstImage !== imageSelected) {
             areAllTheSame = false;
@@ -47,8 +49,6 @@ function printCenterImages() {
         globals.sadFace.setActive(true).setVisible(true);
         globals.textWinner.setText("YOU LOSE");
         globals.textWinner.setActive(true).setVisible(true);
-        globals.restartButton.setActive(true).setVisible(true);
-        globals.spinButton.setActive(true).setVisible(false);
     }
 }
 
