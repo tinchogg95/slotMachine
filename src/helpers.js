@@ -21,10 +21,8 @@ function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHei
     });
 }
 
-function printCenterImages() {
-    //const tolerance = 105;
+function printCenterImages(scene) {
     const tolerance = 100;
-    
     const centerPosition = 300;
     const centerImages = [];
 
@@ -32,14 +30,22 @@ function printCenterImages() {
     markCenterImages(globals.imageObjects2, centerPosition, tolerance, centerImages);
     markCenterImages(globals.imageObjects3, centerPosition, tolerance, centerImages);
 
-    console.log('Center images:', centerImages);
-    const firstImage = centerImages[0];
-    let areAllTheSame = true;
-    centerImages.forEach(imageSelected => {
-        if (firstImage !== imageSelected) {
-            areAllTheSame = false;
-        }
-    });
+    // Ordenar imágenes por su proximidad al centro
+    centerImages.sort((a, b) => Math.abs(a.y - centerPosition) - Math.abs(b.y - centerPosition));
+
+    // Seleccionar las tres imágenes más cercanas al centro
+    const selectedCenterImages = centerImages.slice(0, 3);
+
+    console.log('Center images:', selectedCenterImages.map(image => image.texture.key));
+
+    if (selectedCenterImages.length !== 3) {
+        console.error('Error: No se encontraron exactamente 3 imágenes en el centro');
+        return;
+    }
+
+    const firstImageKey = selectedCenterImages[0].texture.key;
+    let areAllTheSame = selectedCenterImages.every(image => image.texture.key === firstImageKey);
+
     if (areAllTheSame) {
         globals.rabbitMoney.setActive(true).setVisible(true);
         globals.textWinner.setActive(true).setVisible(true);
@@ -55,11 +61,10 @@ function printCenterImages() {
 function markCenterImages(imageArray, centerPosition, tolerance, centerImages) {
     imageArray.forEach(image => {
         if (Math.abs(image.y - centerPosition) <= tolerance) {
-            centerImages.push(image.texture.key);
+            centerImages.push(image);
             image.setTint(0xff0000);
         }
     });
 }
-
 
 export { generateImages, updateAndResetImages, printCenterImages, markCenterImages };
