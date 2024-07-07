@@ -38,20 +38,33 @@ function create() {
     generateImages(this, imageKeys, globals.imageObjects2, widthImages, imageSpacing, totalImages, 1.0);
     generateImages(this, imageKeys, globals.imageObjects3, 2 * widthImages, imageSpacing, totalImages, 0.5);
 
-    let spinButton = this.add.image((config.width / 2), config.height - 50, "spinButton").setOrigin(0.5, 0.5).setInteractive();
-    spinButton.setScale(0.75);
 
-    spinButton.on('pointerdown', () => {
+    globals.restartButton = this.add.image((config.width / 2), config.height - 50, "restartButton").setOrigin(0.5, 0.5).setInteractive();
+    globals.restartButton.setScale(0.75);
+    globals.restartButton.setActive(true).setVisible(false);
+
+    globals.spinButton = this.add.image((config.width / 2), config.height - 50, "spinButton").setOrigin(0.5, 0.5).setInteractive();
+    globals.spinButton.setScale(0.75);
+
+    globals.restartButton.on('pointerdown', () => {
+        this.scene.restart();
+        this.registry.destroy(); // destroy registry
+        this.events.off();﻿
+    });
+
+    globals.spinButton.on('pointerdown', () => {
         globals.isButtonPressed = true;
         globals.scrollSpeed = 25;
     });
 
-    this.children.bringToTop(spinButton);
+    this.children.bringToTop(globals.spinButton);
     this.children.bringToTop(rightArrow);
     this.children.bringToTop(leftArrow);
     this.children.bringToTop(globals.rabbitMoney);
     this.children.bringToTop(globals.textWinner);
     this.children.bringToTop(globals.sadFace);
+    this.children.bringToTop(globals.restartButton);
+
 }
 
 export { create };

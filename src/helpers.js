@@ -22,7 +22,9 @@ function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHei
 }
 
 function printCenterImages() {
-    const tolerance = 105;
+    //const tolerance = 105;
+    const tolerance = 100;
+    
     const centerPosition = 300;
     const centerImages = [];
 
@@ -45,6 +47,8 @@ function printCenterImages() {
         globals.sadFace.setActive(true).setVisible(true);
         globals.textWinner.setText("YOU LOSE");
         globals.textWinner.setActive(true).setVisible(true);
+        globals.restartButton.setActive(true).setVisible(true);
+        globals.spinButton.setActive(true).setVisible(false);
     }
 }
 
@@ -56,5 +60,6 @@ function markCenterImages(imageArray, centerPosition, tolerance, centerImages) {
         }
     });
 }
+
 
 export { generateImages, updateAndResetImages, printCenterImages, markCenterImages };

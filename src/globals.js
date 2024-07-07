@@ -6,6 +6,8 @@ const globals = {
     isButtonPressed: false,
     rabbitMoney: null,
     textWinner: null,
+    restartButton: null,
+    spinButton: null,
     sadFace: null
 };
 

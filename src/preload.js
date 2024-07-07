@@ -8,6 +8,8 @@ function preload() {
     this.load.image("restartButton", "./assets/restart_button.png");
     this.load.image("sadFace", "./assets/sadFace.png");
     this.load.image("rabbitMoney", "./assets/rabbit_money.gif");
+    this.load.image("restartButton", "./assets/restart_button.gif");
+
 }
 
 export { preload };
