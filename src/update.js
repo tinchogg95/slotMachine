@@ -17,7 +17,7 @@ function update(time, delta) {
         } else if (globals.scrollSpeed <= 0) {
             globals.scrollSpeed = 0;
             globals.isButtonPressed = false;
-            printCenterImages();
+            printCenterImages(this);
         }
     }
 }
