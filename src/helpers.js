@@ -22,7 +22,9 @@ function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHei
 }
 
 function printCenterImages() {
-    const tolerance = 100;  // Tolerancia ajustada
+    //const tolerance = 105;
+    const tolerance = 100;
+    
     const centerPosition = 300;
     const centerImages = [];
 
@@ -31,12 +33,6 @@ function printCenterImages() {
     markCenterImages(globals.imageObjects3, centerPosition, tolerance, centerImages);
 
     console.log('Center images:', centerImages);
-
-    if (centerImages.length !== 3) {
-        console.error('Error: No se encontraron exactamente 3 imágenes en el centro');
-        return;
-    }
-
     const firstImage = centerImages[0];
     let areAllTheSame = true;
     centerImages.forEach(imageSelected => {
@@ -44,7 +40,6 @@ function printCenterImages() {
             areAllTheSame = false;
         }
     });
-
     if (areAllTheSame) {
         globals.rabbitMoney.setActive(true).setVisible(true);
         globals.textWinner.setActive(true).setVisible(true);
@@ -65,5 +60,6 @@ function markCenterImages(imageArray, centerPosition, tolerance, centerImages) {
         }
     });
 }
+
 
 export { generateImages, updateAndResetImages, printCenterImages, markCenterImages };
