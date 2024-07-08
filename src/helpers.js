@@ -1,5 +1,5 @@
 import globals from './globals.js';
-
+// create reel with random images
 function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, totalImages, originX) {
     const config = scene.sys.game.config;
 
@@ -11,6 +11,7 @@ function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, t
     }
 }
 
+//create movement of reels 
 function updateAndResetImages(imageObjects, imageKeys, scrollSpeed, imageSpacing, screenHeight, scene) {
     imageObjects.forEach(image => {
         image.y += scrollSpeed;
@@ -26,7 +27,7 @@ function updateAndResetImages(imageObjects, imageKeys, scrollSpeed, imageSpacing
     });
 }
 
-
+// select the result images, mark them and add animations
 function printCenterImages() {
     //const tolerance = 105;
     const tolerance = 100;

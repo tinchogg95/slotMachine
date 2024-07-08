@@ -17,6 +17,6 @@ const globals = {
         width: 800,
         height: 600
     }
-};
+};//declare global variables
 
 export default globals;
