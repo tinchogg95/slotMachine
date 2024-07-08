@@ -1,5 +1,5 @@
 import globals from './globals.js';
-
+// create reel with random images
 function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, totalImages, originX) {
     const config = scene.sys.game.config;
 
@@ -11,16 +11,23 @@ function generateImages(scene, imageKeys, imageObjects, xOffset, imageSpacing, t
     }
 }
 
-function updateAndResetImages(imageObjects, scrollSpeed, imageSpacing, screenHeight) {
+//create movement of reels 
+function updateAndResetImages(imageObjects, imageKeys, scrollSpeed, imageSpacing, screenHeight, scene) {
     imageObjects.forEach(image => {
         image.y += scrollSpeed;
 
         if (image.y > screenHeight + imageSpacing) {
+            // Reset position if image moves out of the screen
             image.y = -imageSpacing;
+
+            // Choose a new random image key and set it
+            let randomIndex = Phaser.Math.Between(0, imageKeys.length - 1);
+            image.setTexture(imageKeys[randomIndex]);
         }
     });
 }
 
+// select the result images, mark them and add animations
 function printCenterImages() {
     //const tolerance = 105;
     const tolerance = 100;
@@ -35,6 +42,8 @@ function printCenterImages() {
     console.log('Center images:', centerImages);
     const firstImage = centerImages[0];
     let areAllTheSame = true;
+    globals.restartButton.setActive(true).setVisible(true);
+ 
     centerImages.forEach(imageSelected => {
         if (firstImage !== imageSelected) {
             areAllTheSame = false;
@@ -47,8 +56,6 @@ function printCenterImages() {
         globals.sadFace.setActive(true).setVisible(true);
         globals.textWinner.setText("YOU LOSE");
         globals.textWinner.setActive(true).setVisible(true);
-        globals.restartButton.setActive(true).setVisible(true);
-        globals.spinButton.setActive(true).setVisible(false);
     }
 }
 

@@ -1,7 +1,7 @@
 import { preload } from './preload.js';
 import { create } from './create.js';
 import { update } from './update.js';
-
+//configuration settings 
 const config = {
     width: 800,
     height: 600,
